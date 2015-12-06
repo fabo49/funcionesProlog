@@ -1,7 +1,17 @@
+
+% ---------------------------------------------------------------------------------
+% |                           Otras operaciones                                   |
+% ---------------------------------------------------------------------------------
+
 %--- maximo/3(+V1, +V2, -Resultado)
 %Indica cual es mayor entre las dos opciones que recibe.
 maximo(V1, V2, Resultado):-
     (V1>=V2 ->  Resultado is V1; Resultado is V2).
+
+
+% ---------------------------------------------------------------------------------
+% |                           Operaciones con listas                              |
+% ---------------------------------------------------------------------------------
 
 %--- tamano/2(+Lista, -Tamano)
 %Retorna en "Tamano" la cantidad de elementos
@@ -86,6 +96,10 @@ reversa_aux([], Pila, Pila).
 reversa_aux([Cabeza|Cola], Pila, Retorno) :-
     reversa_aux(Cola, [Cabeza|Pila], Retorno).
 
+% --------------------------------------------------------------------------------
+% |                      Operaciones con conjuntos                               |
+% --------------------------------------------------------------------------------
+
 %--- union/3(+Conjunto1, +Conjunto2, -Resultado)
 %Retorna la union del Conjunto1 con el Conjunt2
 union(Conjunto1, [], Conjunto1) :- !.
@@ -116,3 +130,20 @@ interseccion_aux([Cabeza|Cola], Conjunto2, Pila, Resultado) :-
     ((miembro(Cabeza, Conjunto2),
     interseccion_aux(Cola, Conjunto2, [Cabeza|Pila], Resultado));
     interseccion_aux(Cola, Conjunto2, Pila, Resultado)), !.
+
+%--- diferencia/3(+Conjunto1, +Conjunto2, -Diferencia)
+% Metodo que realiza la diferencia del Conjunto1 menos el Conjunto2 (Conjunto1\Conjunto2)
+% la operacion es la diferencia de la teoria de conjuntos
+diferencia(C1, [], C1) :- !.
+diferencia([], _, []) :- !.
+diferencia(C1, C2, Resultado) :-
+    diferencia_aux(C1, C2, [], Resultado).
+
+%--- diferencia_aux/4(+Conjunto1, +Conjunto2, +Pila, -Resultado)
+% Ayudante de diferencia que se encarga de construir en la variable "Pila" la diferencia
+% de Conjunto1\Conjunto2 y lo resotrna en "Resultado"
+diferencia_aux([], _, Pila, Pila) :- !.
+diferencia_aux([Cabeza|Cola], Conjunto2, Pila, Resultado) :-
+    ((miembro(Cabeza, Conjunto2),
+        diferencia_aux(Cola, Conjunto2, Pila, Resultado));
+    diferencia_aux(Cola, Conjunto2, [Cabeza|Pila], Resultado)), !.
