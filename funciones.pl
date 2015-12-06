@@ -7,7 +7,7 @@ maximo(V1, V2, Resultado):-
 %Retorna en "Tamano" la cantidad de elementos
 %que tiene "Lista"
 tamano([], 0).
-tamano([_|Cola], T) :- 
+tamano([_|Cola], T) :-
     tamano(Cola, R), T is R+1.
 
 %--- miembro/2(+Elemento, +Lista)
@@ -85,5 +85,34 @@ reversa(Lista, Retorno) :-
 reversa_aux([], Pila, Pila).
 reversa_aux([Cabeza|Cola], Pila, Retorno) :-
     reversa_aux(Cola, [Cabeza|Pila], Retorno).
-    
-    
+
+%--- union/3(+Conjunto1, +Conjunto2, -Resultado)
+%Retorna la union del Conjunto1 con el Conjunt2
+union(Conjunto1, [], Conjunto1) :- !.
+union([], Conjunto2, Conjunto2) :- !.
+union(Conjunto1, Conjunto2, Resultado) :-
+    union_aux(Conjunto1, Conjunto2, Conjunto2, Resultado).
+
+%--- union_aux/4(+Conjunto1, +Conjunto2, +Pila, -Resultado)
+%Metodo auxiliar de union que va acomulando en la pila el resultado
+union_aux([], _, Pila, Pila) :- !.
+union_aux([], Conjunto2, [], Conjunto2) :- !.
+union_aux([Cabeza|Cola], Conjunto2, Pila, Resultado) :-
+    ((miembro(Cabeza, Conjunto2)) ->  union_aux(Cola, Conjunto2, Pila, Resultado);
+    union_aux(Cola, Conjunto2, [Cabeza|Pila], Resultado)), !.
+
+%--- interseccion/3(+Conjunto1, +Conjunto2, -Resultado)
+%Metodo que encuentra la interseccion entre dos conjuntos representados por una lista.
+interseccion(_, [], Resultado) :- Resultado = [], !.
+interseccion([], _, Resultado) :- Resultado = [], !.
+interseccion(C1, C2, Resultado) :-
+    interseccion_aux(C1, C2, [], Resultado).
+
+%--- interseccion_aux/4(+Conjunto1, +Conjunto2, +Pila, -Resultado)
+%Ayudante de interseccion que tiene una pila donde va creando la interseccion de los
+%conjuntos y lo retorna en "Resultado"
+interseccion_aux([], _, Pila, Pila) :- !.
+interseccion_aux([Cabeza|Cola], Conjunto2, Pila, Resultado) :-
+    ((miembro(Cabeza, Conjunto2),
+    interseccion_aux(Cola, Conjunto2, [Cabeza|Pila], Resultado));
+    interseccion_aux(Cola, Conjunto2, Pila, Resultado)), !.
