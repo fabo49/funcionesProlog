@@ -8,6 +8,22 @@
 maximo(V1, V2, Resultado):-
     (V1>=V2 ->  Resultado is V1; Resultado is V2).
 
+%--- fibonacci/2(+Num, -Respuesta)
+% Metodo que calcula el fibonacci del numero que recibe
+fibonacci(0, 0).
+fibonacci(1, 1).
+fibonacci(Num, Respuesta) :-
+    Num1 is (Num-1), fibonacci(Num1, Respuesta1),
+    Num2 is (Num-2), fibonacci(Num2, Respuesta2),
+    Respuesta is (Respuesta1 + Respuesta2), !.
+
+%--- factorial/2(+Num, -Respuesta)
+% Metodo que calcula el factorial de "Num" y lo retorna en "Respuesta"
+factorial(0, 1).
+factorial(1, 1).
+factorial(Num, Respuesta) :-
+    Num1 is (Num-1), factorial(Num1, RespTmp),
+    Respuesta is (Num*RespTmp), !.
 
 % ---------------------------------------------------------------------------------
 % |                           Operaciones con listas                              |
